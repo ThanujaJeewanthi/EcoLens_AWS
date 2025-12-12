@@ -21,28 +21,27 @@ Globals:
       AllowOrigin: "'*'"    
 Resources:
   HelloWorldFunction:
-    Type: AWS::Serverless::Function  # ✅ Correct indentation
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       CodeUri: hello_world/
       Handler: app.lambda_handler
       Runtime: python3.12
       Architectures:
-        - x86_64
+      - x86_64
       Policies:
-        - Version: "2012-10-17"
-          Statement:
-            - Sid: RekognitionAccess
-              Effect: Allow
-              Action:
-                - rekognition:DetectLabels
-              Resource: "*"
+        - Statement:
+            Sid: RekognitionAccess
+            Effect: Allow
+            Action:
+              # We only grant the specific action needed (Least Privilege)
+              - rekognition:DetectLabels
+            Resource: "*" 
       Events:
         HelloWorld:
-          Type: Api
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /hello
             Method: post
-
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
